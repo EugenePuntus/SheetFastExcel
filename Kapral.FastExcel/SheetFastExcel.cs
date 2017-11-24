@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
 
-namespace SheetFastExcel
+namespace Kapral.FastExcel
 {
     public class SheetFastExcel
     {

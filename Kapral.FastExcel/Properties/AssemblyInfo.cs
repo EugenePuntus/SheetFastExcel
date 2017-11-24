@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SheetFastExcel")]
+[assembly: AssemblyTitle("Kapral.FastExcel")]
 [assembly: AssemblyDescription("Class for fast reading Excel")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SheetFastExcel")]
+[assembly: AssemblyProduct("Kapral.FastExcel")]
 [assembly: AssemblyCopyright("Kapra-l ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SheetFastExcel", "SheetFastExcel\SheetFastExcel.csproj", "{47F01AD3-08CA-42A0-93C0-4E0C15C49153}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kapral.FastExcel", "Kapral.FastExcel\Kapral.FastExcel.csproj", "{47F01AD3-08CA-42A0-93C0-4E0C15C49153}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

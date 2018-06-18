@@ -46,9 +46,9 @@ namespace Kapral.FastExcel
         public SheetFastExcel(Worksheet ws, CultureInfo cultureInfo)
         {
             Name = ws.Name;
-            RowsCount = ws.UsedRange.Rows.Count;
-            ColumnsCount = ws.UsedRange.Columns.Count;
-            usedRange = ws.UsedRange;
+            RowsCount = ws.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
+            ColumnsCount = ws.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Column;
+            usedRange = ws.Cells;
             _cultureInfo = cultureInfo;
         }
         
@@ -78,7 +78,7 @@ namespace Kapral.FastExcel
                 var writeRange = usedRange.Range[startCell, endCell];
 
                 sheet = writeRange.Value;
-                //sheet = writeRange.Value2;
+                //var sheet2 = writeRange.Value2;
                 usedRangeRow = new UsedRangeRow(start_row, end_row);
             }
             catch (Exception e)

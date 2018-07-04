@@ -12,7 +12,8 @@ using (var excel = new FastExcel(filePath))
     {    
         // get value
         var item1 = sheet.GetString(5, 1);
-          
+         
+        var column = 100;
         for (int row = 7; row < sheet.RowsCount; row++)
         {
           // checking
@@ -20,8 +21,8 @@ using (var excel = new FastExcel(filePath))
             break;
           
           // get value
-          var item2 = sheet.GetIntOrDefault(row, 7, 0);
-          var item3 = sheet.GetDecimal(row, 1000);
+          var item2 = sheet.GetIntOrDefault(row, column, 0);
+          var item3 = sheet.GetDecimal(row, 10);
         }
     }
 }

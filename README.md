@@ -16,7 +16,7 @@ using (var excel = new FastExcel(filePath))
         var column = 100;
         for (int row = 7; row < sheet.RowsCount; row++)
         {
-          // checking
+          // possible checking
           if(sheet.IsSameStrings(row, 1, "end"))
             break;
           

@@ -11,6 +11,7 @@ namespace Kapral.FastExcel
 {
     public class SheetFastExcel
     {
+        private Worksheet workSheet { get; set; }
         private Range usedRange { get; set; }
         private object[,] sheet { get; set; }
 
@@ -45,11 +46,24 @@ namespace Kapral.FastExcel
 
         public SheetFastExcel(Worksheet ws, CultureInfo cultureInfo)
         {
-            Name = ws.Name;
-            RowsCount = ws.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
-            ColumnsCount = ws.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Column;
-            usedRange = ws.Cells;
+            workSheet = ws;
+            Name = workSheet.Name;
+            RowsCount = workSheet.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
+            ColumnsCount = workSheet.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Column;
+            usedRange = workSheet.Cells;
             _cultureInfo = cultureInfo;
+        }
+
+        public void SaveData(object[,] data, int dataOffset = 0)
+        {
+            var sheetRows = data.Length + dataOffset;
+            var sheetCols = data.Rank;
+
+            var startCell = (Range)workSheet.Cells[1 + dataOffset, 1];
+            var endCell = (Range)workSheet.Cells[sheetRows, sheetCols];
+            var excelcells = workSheet.Range[startCell, endCell];
+
+            excelcells.Value2 = data;
         }
         
         private void LazyLoadingExcel(int row)

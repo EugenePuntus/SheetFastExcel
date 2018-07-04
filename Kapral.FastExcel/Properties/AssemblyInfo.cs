@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Kapral.FastExcel")]
 [assembly: AssemblyDescription("Class for fast reading Excel")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Puntus Eugene")]
 [assembly: AssemblyProduct("Kapral.FastExcel")]
 [assembly: AssemblyCopyright("Kapra-l ©  2017")]
 [assembly: AssemblyTrademark("")]

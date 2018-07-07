@@ -9,7 +9,7 @@ using Microsoft.Office.Interop.Excel;
 
 namespace Kapral.FastExcel
 {
-    public class SheetFastExcel
+    public class SheetFastExcel : ISheetFastExcel
     {
         private Worksheet workSheet { get; set; }
         private Range usedRange { get; set; }
@@ -102,7 +102,7 @@ namespace Kapral.FastExcel
             }
         }
 
-        private object GetCellValue(int row, int col)
+        public object GetCellValue(int row, int col)
         {
             try
             {

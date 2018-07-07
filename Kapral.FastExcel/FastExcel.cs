@@ -6,12 +6,12 @@ using Microsoft.Office.Interop.Excel;
 
 namespace Kapral.FastExcel
 {
-    public class FastExcel : IDisposable
+    public class FastExcel : IFastExcel, IDisposable
     {
         private readonly Application _app;
         private readonly Workbook _workBook;
 
-        public IEnumerable<SheetFastExcel> Sheets
+        public IEnumerable<ISheetFastExcel> Sheets
         {
             get
             {
@@ -45,7 +45,7 @@ namespace Kapral.FastExcel
         /// </summary>
         /// <param name="nameSheet">The size must not exceed 32 characters</param>
         /// <returns></returns>
-        public SheetFastExcel AddNewSheet(string nameSheet)
+        public ISheetFastExcel AddNewSheet(string nameSheet)
         {
             //var workSheet = (Excel.Worksheet)objExcel.Worksheets.Add(Type.Missing, objExcel.Worksheets[objExcel.Worksheets.Count], 1, XlSheetType.xlWorksheet);
             var workSheet = (Worksheet) _app.Worksheets.Add(System.Type.Missing, _app.Worksheets[_app.Worksheets.Count], 1, XlSheetType.xlWorksheet);

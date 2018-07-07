@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FastExcel.cs" />
+    <Compile Include="IFastExcel.cs" />
+    <Compile Include="ISheetFastExcel.cs" />
     <Compile Include="SheetFastExcel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

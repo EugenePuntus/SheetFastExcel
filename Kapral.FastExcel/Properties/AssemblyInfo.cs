@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Kapral.FastExcel")]
-[assembly: AssemblyDescription("Class for fast reading Excel")]
+[assembly: AssemblyDescription("Class for fast reading and writing to Excel file")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Puntus Eugene")]
 [assembly: AssemblyProduct("Kapral.FastExcel")]

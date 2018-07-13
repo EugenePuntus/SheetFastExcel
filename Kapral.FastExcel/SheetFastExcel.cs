@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Kapral.FastExcel.FastExcelAttribute;
 using Microsoft.Office.Interop.Excel;
 
 namespace Kapral.FastExcel
 {
+
     public class SheetFastExcel : ISheetFastExcel
     {
         private Worksheet workSheet { get; set; }
@@ -22,6 +26,7 @@ namespace Kapral.FastExcel
         public string Name { get; private set; }
         public int RowsCount { get; private set; }
         public int ColumnsCount { get; private set; }
+        public event EventExcelRange BeforeSaving;
 
         private class UsedRangeRow
         {
@@ -54,18 +59,100 @@ namespace Kapral.FastExcel
             _cultureInfo = cultureInfo;
         }
 
-        public void SaveData(object[,] data, int dataOffset = 0)
+        public void SaveData(object[,] data, int offSetRow)
         {
-            var sheetRows = data.Length + dataOffset;
-            var sheetCols = data.Rank;
+            if(data.Length == 0)
+                return;
 
-            var startCell = (Range)workSheet.Cells[1 + dataOffset, 1];
-            var endCell = (Range)workSheet.Cells[sheetRows, sheetCols];
+            var sheetRows = data.GetLength(0);
+            var sheetCols = data.GetLength(1);
+
+            var startCell = (Range)workSheet.Cells[1 + offSetRow, 1];
+            var endCell = (Range)workSheet.Cells[sheetRows + offSetRow, sheetCols];
             var excelcells = workSheet.Range[startCell, endCell];
 
-            excelcells.Value2 = data;
+            BeforeSaving?.Invoke(excelcells);
+
+            excelcells.Value = data;
         }
-        
+
+        public void SaveData(object[,] data)
+        {
+            SaveData(data, 0);
+        }
+
+        public void SaveData<T>(IEnumerable<T> data)
+        {
+            int maxRowData = 1000;
+            var properties = new List<PropertyInfo>();
+            var headers = new List<string>();
+
+            var tempPorperty = typeof(T)
+                .GetProperties(
+                    BindingFlags.GetProperty |
+                    BindingFlags.Instance |
+                    BindingFlags.Public |
+                    BindingFlags.DeclaredOnly
+                );
+
+            var ignoreHeader = typeof(T).GetCustomAttributes(typeof(IgnoreHeaderAttribute), true).FirstOrDefault() as IgnoreHeaderAttribute;
+
+            for (var i = 0; i < tempPorperty.Length; i++)
+            {
+                var attribute = tempPorperty[i].GetCustomAttributes(typeof(ColumnAttribute), true).FirstOrDefault() as ColumnAttribute;
+                if (attribute == null) continue;
+
+                headers.Add(attribute.HeaderName);
+                properties.Add(tempPorperty[i]);
+
+                if(!string.IsNullOrWhiteSpace(attribute.NumberFormat))
+                    workSheet.Columns[properties.Count].NumberFormat = attribute.NumberFormat;
+            }
+
+            var offSetRow = 0;
+
+            if (ignoreHeader == null && headers.Count > 0)
+            {
+                var dataHeader = new object[1, headers.Count];
+                for (int j = 0; j < headers.Count; j++)
+                {
+                    dataHeader[0, j] = headers[j];
+                }
+
+                SaveData(dataHeader);
+                offSetRow++;
+            }
+
+            var dataExcel = new object[maxRowData, properties.Count];
+            int counterRow = 0;
+
+            foreach (var myObject in data)
+            {
+                int column = 0;
+
+                foreach (var property in properties)
+                {
+                    var val = property.GetValue(myObject, null).ToString();
+                    dataExcel[counterRow, column] = val;
+                    column++;
+                }
+
+                counterRow++;
+
+                if (counterRow >= maxRowData)
+                {
+                    SaveData(dataExcel, offSetRow);
+                    counterRow = 0;
+                    offSetRow += maxRowData;
+                    dataExcel = new object[maxRowData, properties.Count];
+                }
+            }
+
+            var partialDataExcel = new object[counterRow, properties.Count];
+            Array.Copy(dataExcel, partialDataExcel, partialDataExcel.Length);
+            SaveData(partialDataExcel, offSetRow);
+        }
+
         private void LazyLoadingExcel(int row)
         {
             try

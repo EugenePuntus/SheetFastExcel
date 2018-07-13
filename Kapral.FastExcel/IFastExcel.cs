@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Kapral.FastExcel
 {
-    public interface IFastExcel
+    public interface IFastExcel : IDisposable
     {
         IEnumerable<ISheetFastExcel> Sheets { get; }
         ISheetFastExcel AddNewSheet(string nameSheet);

@@ -45,11 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventExcelRange.cs" />
     <Compile Include="FastExcel.cs" />
+    <Compile Include="FastExcelAttribute\IgnoreHeaderAttribute.cs" />
     <Compile Include="IFastExcel.cs" />
     <Compile Include="ISheetFastExcel.cs" />
+    <Compile Include="FastExcelAttribute\ColumnAttribute.cs" />
     <Compile Include="SheetFastExcel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SheetExcelFactory.cs" />
+    <Compile Include="DefaultSheetExcelFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

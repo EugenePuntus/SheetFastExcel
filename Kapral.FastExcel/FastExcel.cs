@@ -6,10 +6,35 @@ using Microsoft.Office.Interop.Excel;
 
 namespace Kapral.FastExcel
 {
-    public class FastExcel : IFastExcel, IDisposable
+    public class FastExcel : IFastExcel
     {
         private readonly Application _app;
         private readonly Workbook _workBook;
+        private readonly SheetExcelFactory _sheetFactory;
+
+        public FastExcel()
+        {
+            _app = new Application();
+            _workBook = _app.Workbooks.Add();
+            _sheetFactory = new DefaultSheetExcelFactory();
+        }
+
+        public FastExcel(SheetExcelFactory sheetFactory) : this()
+        {
+            _sheetFactory = sheetFactory;
+        }
+
+        public FastExcel(string filePath)
+        {
+            _app = new Application();
+            _workBook = _app.Workbooks.Add(filePath);
+            _sheetFactory = new DefaultSheetExcelFactory();
+        }
+
+        public FastExcel(string filePath, SheetExcelFactory sheetFactory) : this(filePath)
+        {
+            _sheetFactory = sheetFactory;
+        }
 
         public IEnumerable<ISheetFastExcel> Sheets
         {
@@ -18,21 +43,9 @@ namespace Kapral.FastExcel
                 for (int i = 1; i <= _workBook.Worksheets.Count; i++)
                 {
                     var sheet = _workBook.Worksheets[i] as Worksheet;
-                    yield return new SheetFastExcel(sheet);
+                    yield return _sheetFactory.Get(sheet);
                 }
             }
-        }
-
-        public FastExcel(string filePath)
-        {
-            _app = new Application();
-            _workBook = _app.Workbooks.Add(filePath);
-        }
-
-        public FastExcel()
-        {
-            _app = new Application();
-            _workBook = _app.Workbooks.Add();
         }
 
         public void GenerateAndOpen()
@@ -47,11 +60,10 @@ namespace Kapral.FastExcel
         /// <returns></returns>
         public ISheetFastExcel AddNewSheet(string nameSheet)
         {
-            //var workSheet = (Excel.Worksheet)objExcel.Worksheets.Add(Type.Missing, objExcel.Worksheets[objExcel.Worksheets.Count], 1, XlSheetType.xlWorksheet);
             var workSheet = (Worksheet) _app.Worksheets.Add(System.Type.Missing, _app.Worksheets[_app.Worksheets.Count], 1, XlSheetType.xlWorksheet);
             workSheet.Name = nameSheet;
 
-            return new SheetFastExcel(workSheet);
+            return _sheetFactory.Get(workSheet);
         }
 
         public void Dispose()
@@ -64,7 +76,10 @@ namespace Kapral.FastExcel
                     _app.Quit();
                 }
             }
-            catch { }
+            catch
+            {
+                
+            }
         }
     }
 }

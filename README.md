@@ -72,9 +72,9 @@ private void UseDefaultStyle(Range range)
     range.VerticalAlignment = XlVAlign.xlVAlignCenter;
 
     var borders = range.Borders;
-    borders[XlBordersIndex.xlEdgeBottom].Color = borders[XlBordersIndex.xlEdgeLeft].Color = borders[XlBordersIndex.xlEdgeTop].Color = borders[XlBordersIndex.xlInsideHorizontal].Color = borders[XlBordersIndex.xlInsideVertical].Color = borders[XlBordersIndex.xlEdgeRight].Color = 0;
-    borders[XlBordersIndex.xlEdgeBottom].LineStyle = borders[XlBordersIndex.xlEdgeLeft].LineStyle = borders[XlBordersIndex.xlEdgeTop].LineStyle = borders[XlBordersIndex.xlInsideHorizontal].LineStyle = borders[XlBordersIndex.xlInsideVertical].LineStyle = borders[XlBordersIndex.xlEdgeRight].LineStyle = XlLineStyle.xlContinuous;
-    borders[XlBordersIndex.xlEdgeBottom].Weight = borders[XlBordersIndex.xlEdgeLeft].Weight = borders[XlBordersIndex.xlEdgeTop].Weight = borders[XlBordersIndex.xlInsideHorizontal].Weight = borders[XlBordersIndex.xlInsideVertical].Weight = borders[XlBordersIndex.xlEdgeRight].Weight = 2;
+    borders[XlBordersIndex.xlInsideHorizontal].Color = borders[XlBordersIndex.xlInsideVertical].Color  = 0;
+    borders[XlBordersIndex.xlInsideHorizontal].LineStyle = XlLineStyle.xlContinuous;
+    borders[XlBordersIndex.xlInsideHorizontal].Weight = borders[XlBordersIndex.xlInsideVertical].Weight = 2;
 }
 
 ```

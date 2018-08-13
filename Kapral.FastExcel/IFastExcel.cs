@@ -10,5 +10,8 @@ namespace Kapral.FastExcel
         IEnumerable<ISheetFastExcel> Sheets { get; }
         ISheetFastExcel AddNewSheet(string nameSheet);
         void GenerateAndOpen();
+        void Save();
+        void SaveAs(string filename);
+        void SaveCopyAs(string filename);
     }
 }

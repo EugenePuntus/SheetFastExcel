@@ -15,7 +15,7 @@ namespace Kapral.FastExcel
         public FastExcel()
         {
             _app = new Application();
-            _workBook = _app.Workbooks.Add();
+            _workBook = _app.Workbooks.Add(Type.Missing);
             _sheetFactory = new DefaultSheetExcelFactory();
         }
 
@@ -53,6 +53,29 @@ namespace Kapral.FastExcel
             _app.Visible = true;
         }
 
+        public void Save()
+        {
+            _workBook.Save();
+        }
+
+        public void SaveAs(string fileName)
+        {
+            _app.DisplayAlerts = false;
+            _workBook.Saved = true;
+            _workBook.SaveAs(fileName);
+        }
+
+        /// <summary>
+        /// Under certain conditions, "Save" and "SaveAs" does not work. In these cases, it is recommended to use "SaveCopyAs"
+        /// </summary>
+        /// <param name="fileName"></param>
+        public void SaveCopyAs(string fileName)
+        {
+            _app.DisplayAlerts = false;
+            _workBook.Saved = true;
+            _workBook.SaveCopyAs(fileName);
+        }
+
         /// <summary>
         /// Adding a new sheet to the document
         /// </summary>
@@ -60,7 +83,7 @@ namespace Kapral.FastExcel
         /// <returns></returns>
         public ISheetFastExcel AddNewSheet(string nameSheet)
         {
-            var workSheet = (Worksheet) _app.Worksheets.Add(System.Type.Missing, _app.Worksheets[_app.Worksheets.Count], 1, XlSheetType.xlWorksheet);
+            var workSheet = (Worksheet)_workBook.Worksheets.Add(System.Type.Missing, _app.Worksheets[_app.Worksheets.Count], 1, XlSheetType.xlWorksheet);
             workSheet.Name = nameSheet;
 
             return _sheetFactory.Get(workSheet);

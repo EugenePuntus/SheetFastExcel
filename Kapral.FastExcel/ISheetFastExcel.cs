@@ -23,6 +23,11 @@ namespace Kapral.FastExcel
         void SaveData<T>(IEnumerable<T> data);
         void SaveData(object[,] data, int offSetRow);
 
+        string Name { get; }
+
+        int RowsCount { get; }
+        int ColumnsCount { get; }
+
         //get value
         object GetCellValue(int row, int col);
         string GetString(int row, int col);

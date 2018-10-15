@@ -105,8 +105,18 @@ namespace Kapral.FastExcel
                 headers.Add(attribute.HeaderName);
                 properties.Add(tempPorperty[i]);
 
-                if(!string.IsNullOrWhiteSpace(attribute.NumberFormat))
-                    workSheet.Columns[properties.Count].NumberFormat = attribute.NumberFormat;
+                var range = workSheet.Columns[properties.Count] as Range;
+
+                if(range == null) continue;
+
+                if (!string.IsNullOrWhiteSpace(attribute.NumberFormat))
+                    range.NumberFormat = attribute.NumberFormat;
+
+                if(attribute.ColumnWidth > 0)
+                    range.ColumnWidth = attribute.ColumnWidth;
+
+                if (attribute.RowHeight > 0)
+                    range.RowHeight = attribute.RowHeight;
             }
 
             var offSetRow = 0;

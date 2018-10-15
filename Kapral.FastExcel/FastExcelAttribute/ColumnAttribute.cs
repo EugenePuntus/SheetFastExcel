@@ -29,5 +29,9 @@ namespace Kapral.FastExcel.FastExcelAttribute
         /// General, 0 and other
         /// </summary>
         public string NumberFormat { get; set; }
+
+        public double ColumnWidth { get; set; }
+
+        public double RowHeight { get; set; }
     }
 }

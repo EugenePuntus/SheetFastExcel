@@ -54,7 +54,9 @@ namespace Kapral.FastExcel
             workSheet = ws;
             Name = workSheet.Name;
             RowsCount = workSheet.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
-            ColumnsCount = workSheet.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Column;
+            //ColumnsCount = workSheet.UsedRange.SpecialCells(XlCellType.xlCellTypeLastCell).Column;
+            ColumnsCount = workSheet.UsedRange.Columns.Count;
+            //var columnsCount2 = ws.UsedRange.Columns[ws.UsedRange.Columns.Count].Column;
             usedRange = workSheet.Cells;
             _cultureInfo = cultureInfo;
         }

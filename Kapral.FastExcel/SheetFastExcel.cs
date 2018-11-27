@@ -61,6 +61,11 @@ namespace Kapral.FastExcel
             _cultureInfo = cultureInfo;
         }
 
+        public void SaveData(object[,] data)
+        {
+            SaveData(data, 0);
+        }
+
         public void SaveData(object[,] data, int offSetRow)
         {
             if(data.Length == 0)
@@ -78,14 +83,13 @@ namespace Kapral.FastExcel
             excelcells.Value = data;
         }
 
-        public void SaveData(object[,] data)
-        {
-            SaveData(data, 0);
-        }
-
         public void SaveData<T>(IEnumerable<T> data)
         {
-            int maxRowData = 1000;
+            SaveData(data, 100);
+        }
+
+        public void SaveData<T>(IEnumerable<T> data, int rowsLoadedAtOneTime)
+        {
             var properties = new List<PropertyInfo>();
             var headers = new List<string>();
 
@@ -135,7 +139,7 @@ namespace Kapral.FastExcel
                 offSetRow++;
             }
 
-            var dataExcel = new object[maxRowData, properties.Count];
+            var dataExcel = new object[rowsLoadedAtOneTime, properties.Count];
             int counterRow = 0;
 
             foreach (var myObject in data)
@@ -151,12 +155,12 @@ namespace Kapral.FastExcel
 
                 counterRow++;
 
-                if (counterRow >= maxRowData)
+                if (counterRow >= rowsLoadedAtOneTime)
                 {
                     SaveData(dataExcel, offSetRow);
                     counterRow = 0;
-                    offSetRow += maxRowData;
-                    dataExcel = new object[maxRowData, properties.Count];
+                    offSetRow += rowsLoadedAtOneTime;
+                    dataExcel = new object[rowsLoadedAtOneTime, properties.Count];
                 }
             }
 

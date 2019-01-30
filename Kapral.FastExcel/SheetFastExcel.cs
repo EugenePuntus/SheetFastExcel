@@ -93,7 +93,10 @@ namespace Kapral.FastExcel
             var properties = new List<PropertyInfo>();
             var headers = new List<string>();
 
-            var tempPorperty = typeof(T)
+            var value = data.FirstOrDefault();
+            var type = value?.GetType() ?? typeof(T);
+
+            var tempPorperty = type
                 .GetProperties(
                     BindingFlags.GetProperty |
                     BindingFlags.Instance |
@@ -101,7 +104,7 @@ namespace Kapral.FastExcel
                     BindingFlags.DeclaredOnly
                 );
 
-            var ignoreHeader = typeof(T).GetCustomAttributes(typeof(IgnoreHeaderAttribute), true).FirstOrDefault() as IgnoreHeaderAttribute;
+            var ignoreHeader = type.GetCustomAttributes(typeof(IgnoreHeaderAttribute), true).FirstOrDefault() as IgnoreHeaderAttribute;
 
             for (var i = 0; i < tempPorperty.Length; i++)
             {

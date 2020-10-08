@@ -43,6 +43,7 @@ namespace Kapral.FastExcel
 
         public SheetFastExcel(Worksheet ws) : this(ws, new CultureInfo("ru-RU"))
         {
+            asdsad
         }
 
         public SheetFastExcel(Worksheet ws, CultureInfo cultureInfo)

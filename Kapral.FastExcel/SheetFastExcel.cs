@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Kapral.FastExcel.FastExcelAttribute;
 using Microsoft.Office.Interop.Excel;
 
 namespace Kapral.FastExcel
 {
-
     public class SheetFastExcel : ISheetFastExcel
     {
         private Worksheet workSheet { get; set; }
@@ -45,7 +41,8 @@ namespace Kapral.FastExcel
             }
         }
 
-        public SheetFastExcel(Worksheet ws) : this(ws, new CultureInfo("ru-RU"))
+        public SheetFastExcel(Worksheet ws)
+            : this(ws, new CultureInfo("ru-RU"))
         {
         }
 

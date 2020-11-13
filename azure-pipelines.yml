@@ -15,35 +15,43 @@ variables:
   buildConfiguration: 'Release'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
-steps:
-- ${{ if eq('refs/heads/master', 'refs/heads/master') }}:
-  - task: NuGetToolInstaller@1
+stages:
+- stage: Build
+  jobs:
+  - job: build_projects
+    steps:
+      - task: NuGetToolInstaller@1
 
-  - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '$(solution)'
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '$(solution)'
 
-  - task: VSBuild@1
-    inputs:
-      solution: '$(solution)'
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
+      - task: VSBuild@1
+        inputs:
+          solution: '$(solution)'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
 
-  - task: VSTest@2
-    inputs:
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
+      - task: VSTest@2
+        inputs:
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
 
-  - task: NuGetCommand@2
-    inputs:
-      command: 'pack'
-      packagesToPack: '**/*.csproj'
-      configuration: '$(buildConfiguration)'
-      versioningScheme: 'off'
+- stage: Publish
+  condition: and(succeeded(), eq(variables.isMain, true))
+  jobs:
+  - job: publish_nugets
+    steps:
+      - task: NuGetCommand@2
+        inputs:
+          command: 'pack'
+          packagesToPack: '**/*.csproj'
+          configuration: '$(buildConfiguration)'
+          versioningScheme: 'off'
 
-  - task: NuGetCommand@2
-    inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-      nuGetFeedType: 'internal'
-      publishVstsFeed: '604b2c03-9075-41f3-9fce-edcdf68c3ed2'
+      - task: NuGetCommand@2
+        inputs:
+          command: 'push'
+          packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+          nuGetFeedType: 'internal'
+          publishVstsFeed: '604b2c03-9075-41f3-9fce-edcdf68c3ed2'

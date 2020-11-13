@@ -16,7 +16,7 @@ variables:
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 steps:
-- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+- ${{ if eq('refs/heads/master', 'refs/heads/master') }}:
   - task: NuGetToolInstaller@1
 
   - task: NuGetCommand@2

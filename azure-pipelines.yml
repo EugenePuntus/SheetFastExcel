@@ -36,13 +36,9 @@ stages:
         inputs:
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
-
-- stage: Publish
-  condition: and(succeeded(), eq(variables.isMain, true))
-  jobs:
-  - job: publish_nugets
-    steps:
+          
       - task: NuGetCommand@2
+        condition: and(succeeded(), eq(variables.isMain, true))
         inputs:
           command: 'pack'
           packagesToPack: '**/*.csproj'
@@ -50,6 +46,7 @@ stages:
           versioningScheme: 'off'
 
       - task: NuGetCommand@2
+        condition: and(succeeded(), eq(variables.isMain, true))
         inputs:
           command: 'push'
           packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
